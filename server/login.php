@@ -24,6 +24,13 @@
         exit();       
     }
 
+    //Checks if user allready online
+    session_start();
+    if ( isset( $_SESSION[ 'username' ] ) ) {
+        header("HTTP/1.1 400 User allready online");
+        exit();
+    }
+
 
     logUser( $username, $password);
 ?>

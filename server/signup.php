@@ -17,11 +17,10 @@
 
 
     validateUserDetails( $username, $password, $password_confirm);
-  
     addUser( $username, $password );
     
     //Redirect to dashboard mark as online
-    header("HTTP/1.1 200 signed");
+    header("Location: http://localhost:8000/");
     exit();
 
 

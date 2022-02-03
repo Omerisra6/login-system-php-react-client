@@ -6,7 +6,7 @@
         $handle = fopen( $userDetailsPath, 'w');
         
         $hashed_password = password_hash( $password, PASSWORD_DEFAULT);
-        $online = FALSE;
+        $online = TRUE;
         $login_count = 0;
         $ip = $_SERVER['REMOTE_ADDR'];
         $last_login = date("h:i:sa");
@@ -29,18 +29,13 @@
             exit();           
         }
 
-        //Checks if user allready online
-        $is_online = filter_var( $userDetails[ 2 ], FILTER_VALIDATE_BOOLEAN );
-        if ( $is_online ) {
-            header("HTTP/1.1 400 User allready online");
-            exit();
-            
-        }
-        
         //Marks user as online, adds his logins count and updates ip
         $userDetails[ 2 ]  = TRUE;    
         $userDetails[ 3 ]  = (int)$userDetails[ 3 ]++;
         $userDetails [ 4 ] = $_SERVER['REMOTE_ADDR'];
+        
+        session_start();
+        $_SESSION[ 'username' ] = $username;
 
         updateUser( $username, $userDetails);
         
@@ -53,16 +48,15 @@
 
         $userDetails = getUser( $username );
 
-        $is_online   = filter_var( $userDetails[ 2 ], FILTER_VALIDATE_BOOLEAN );
-
-        if ( ! $is_online ) {
+        if ( ! isset( $_SESSION[ 'username' ] ) ) {
             header("HTTP/1.1 400 user allready offline");
             exit(); 
         }
 
         $userDetails[ 2 ] = FALSE;
         updateUser( $username, $userDetails);
-
+        session_destroy();
+        
         header("HTTP/1.1 200 Logged off");
         exit();              
     }
