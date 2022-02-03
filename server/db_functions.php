@@ -34,6 +34,7 @@
         $userDetails[ 3 ]  = (int)$userDetails[ 3 ]++;
         $userDetails [ 4 ] = $_SERVER['REMOTE_ADDR'];
         
+        //Sets users session
         session_start();
         $_SESSION[ 'username' ] = $username;
 
@@ -55,8 +56,10 @@
 
         $userDetails[ 2 ] = FALSE;
         updateUser( $username, $userDetails);
+
+        //Deletes session
         session_destroy();
-        
+
         header("HTTP/1.1 200 Logged off");
         exit();              
     }

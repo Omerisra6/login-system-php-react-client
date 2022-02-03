@@ -19,8 +19,8 @@
     validateUserDetails( $username, $password, $password_confirm);
     addUser( $username, $password );
     
-    //Redirect to dashboard mark as online
-    header("Location: http://localhost:8000/");
+    //Successfull signup
+    header("HTTP/1.1 200 Signed up sucsessfully");
     exit();
 
 
