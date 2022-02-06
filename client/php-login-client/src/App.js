@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import './App.css';
 import LoginOrSignup from './components/LoginOrSignup';
 import Main from './components/Main';
 import useLocalStorage from './hooks/useLocalStorage';
-import { logOffRequest } from './userRequests';
 
 function App() {
 

@@ -70,7 +70,7 @@ StyledInput.defaultProps = {
 export default function Input( { className, id, name, type, size, color, placeholder, inputRef } ) {
 
     return (
-        <StyledInput name={name} type="text" className={className } id={id} type={type} size={size} color={color} placeholder={placeholder} ref={inputRef}/> 
+        <StyledInput name={name} className={className } id={id} type={type} size={size} color={color} placeholder={placeholder} ref={inputRef}/> 
     )
 }
 
