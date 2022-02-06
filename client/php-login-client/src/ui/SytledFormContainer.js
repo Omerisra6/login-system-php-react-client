@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const StyledLogin = styled.div`
+const StyledFormContainer = styled.div`
     height: 70vh;
     width: 40vw;
     display: flex;
@@ -11,4 +11,4 @@ const StyledLogin = styled.div`
     border-radius: 8px;
 `
 
-export default StyledLogin;
+export default StyledFormContainer;

@@ -25,13 +25,13 @@ export default function SignupForm( { setUsername } ) {
 
     return(
         <Form gap="2vh" onSumbit={onSignup}>
-            <label for="username"/>
+            <label htmlFor="username"/>
             <Input  type="text" placeholder="Username" size="fit" name="username" id="username" inputRef={usernameRef}/>
 
-            <label for="password"/>
+            <label htmlFor="password"/>
             <Input type="password" placeholder="Password" size="fit" name="password" id="password" inputRef={passwordRef}/>
 
-            <label for="confirm-password"/>
+            <label htmlFor="confirm-password"/>
             <Input type="password" placeholder="Confirm Password" size="fit" name="confirm_password" id="confirm_password" inputRef={passwordConfirmRef}/>
             
             <Button type="sumbit" size="fit">Login</Button>
