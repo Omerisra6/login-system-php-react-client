@@ -18,15 +18,6 @@
         die();
     }
 
-    
-    $username = preg_replace('/\s+/', '', $_GET['username']);
-
-    //Checks if user exists
-    if ( ! isUserExists( $username ) ) {
-        header( "HTTP/1.1 400 ". $username .  "is not exists");
-        exit();       
-    }
-
-    logUserOff( $username );
+    logUserOff( );
 
 ?>

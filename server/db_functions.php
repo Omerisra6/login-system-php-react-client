@@ -1,22 +1,27 @@
 <?php
 
+    //Adds user to DB
     function addUser( $username, $password ){
 
         $userDetailsPath = getUserDetailsPath( $username );
         $handle = fopen( $userDetailsPath, 'w');
         
         $hashed_password = password_hash( $password, PASSWORD_DEFAULT);
-        $online = TRUE;
         $login_count = 0;
         $ip = $_SERVER['REMOTE_ADDR'];
-        $last_login = date("h:i:sa");
+        $last_action = date("h:i:sa");
 
-        $user = [ $username, $hashed_password, $online, $login_count, $ip, $last_login ];
+        $user = [ $username, $hashed_password, $login_count, $ip, $last_action ];
 
         fputcsv( $handle, $user, ','); 
         fclose( $handle );
+
+        session_start();
+        $_SESSION[ 'username' ] = $username;
+
     }
 
+    //Verify user and updates his details
     function logUser( $username, $password ){
 
         $userDetails = getUser( $username );
@@ -24,19 +29,27 @@
         //Verifing password
         $db_password = $userDetails[1];
         $isPasswordCorrect = password_verify( $password, $db_password );
+
         if( ! $isPasswordCorrect ){
             header("HTTP/1.1 400 Wrong password");
             exit();           
         }
 
-        //Marks user as online, adds his logins count and updates ip
-        $userDetails[ 2 ]  = TRUE;    
-        $userDetails[ 3 ]  = (int)$userDetails[ 3 ]++;
-        $userDetails [ 4 ] = $_SERVER['REMOTE_ADDR'];
+        //updates ip
+        $userDetails [ 3 ] = $_SERVER['REMOTE_ADDR'];
         
-        //Sets users session
-        session_start();
-        $_SESSION[ 'username' ] = $username;
+        //Updates user details if he is not logged in allready
+        if( ! isset( $_SESSION[ 'username' ] ) ){
+
+            session_start(); 
+            $_SESSION[ 'username' ] = $username;
+
+            //Updates login count
+            $userDetails[ 2 ]       = (int)$userDetails[ 2 ]++;
+
+            //Updates lastAction
+            $userDetails [ 4 ]      = date("h:i:sa");
+        }
 
         updateUser( $username, $userDetails);
         
@@ -45,17 +58,9 @@
         exit();
     }
 
-    function logUserOff( $username ){
 
-        $userDetails = getUser( $username );
-
-        if ( ! isset( $_SESSION[ 'username' ] ) ) {
-            header("HTTP/1.1 400 user allready offline");
-            exit(); 
-        }
-
-        $userDetails[ 2 ] = FALSE;
-        updateUser( $username, $userDetails);
+    //Deletes session if exists
+    function logUserOff(){
 
         //Deletes session
         session_destroy();

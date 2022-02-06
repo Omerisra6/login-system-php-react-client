@@ -12,8 +12,8 @@
             exit();
         }
     
-        if ( file_exists( realpath("./users/".$username.".csv") )) {
-            header("HTTP/1.1 400 username is taken");
+        if ( isUserExists( $username) ) {
+            header("HTTP/1.1 409 username is taken");
             exit();
         }
 
