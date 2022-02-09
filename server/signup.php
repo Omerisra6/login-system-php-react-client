@@ -8,6 +8,9 @@
     header("Access-Control-Allow-Methods: POST, OPTIONS");
     header("Access-Control-Allow-Credentials: true");
     header('Content-Type: application/json');
+    
+    
+    session_start();
 
     //React js sends  options request before the post
     $method = $_SERVER['REQUEST_METHOD'];
@@ -32,6 +35,7 @@
     
     //Successfull signup
     header("HTTP/1.1 201 Signed up sucsessfully");
+    echo( json_encode( session_id() ) );
     exit();
 
 

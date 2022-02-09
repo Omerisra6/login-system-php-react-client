@@ -3,20 +3,24 @@
     //Adds user to DB
     function addUser( $username, $password ){
 
+        if ( session_status() === PHP_SESSION_NONE ) {
+        
+            session_start();
+        }
         $userDetailsPath = getUserDetailsPath( $username );
         $handle = fopen( $userDetailsPath, 'w');
         
         $hashed_password = password_hash( $password, PASSWORD_DEFAULT);
         $login_count = 0;
         $ip = $_SERVER['REMOTE_ADDR'];
-        $last_action = date("h:i:sa");
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $last_action_register_time = date("Y-m-d H:i:s");     
 
-        $user = [ $username, $hashed_password, $login_count, $ip, $last_action ];
+        $user = [ $username, $hashed_password, $login_count, $ip, $user_agent, $last_action_register_time, $last_action_register_time ];
 
         fputcsv( $handle, $user, ','); 
         fclose( $handle );
 
-        session_start();
         $_SESSION[ 'username' ] = $username;
 
     }
@@ -24,10 +28,15 @@
     //Verify user and updates his details
     function logUser( $username, $password ){
 
+        if ( session_status() === PHP_SESSION_NONE ) {
+        
+            session_start();
+        }
+
         $userDetails = getUser( $username );
-      
+
         //Verifing password
-        $db_password = $userDetails[1];
+        $db_password = $userDetails[ 1 ];
         $isPasswordCorrect = password_verify( $password, $db_password );
 
         if( ! $isPasswordCorrect ){
@@ -35,45 +44,97 @@
             exit();           
         }
 
-        //updates ip
-        $userDetails [ 3 ] = $_SERVER['REMOTE_ADDR'];
-        
-        //Updates user details if he is not logged in allready
-        if( ! isset( $_SESSION[ 'username' ] ) ){
+        //updates user data
+        updateUser( $username );
 
-            session_start(); 
-            $_SESSION[ 'username' ] = $username;
-
-            //Updates login count
-            $userDetails[ 2 ]       = (int)$userDetails[ 2 ]++;
-
-            //Updates lastAction
-            $userDetails [ 4 ]      = date("h:i:sa");
-        }
-
-        updateUser( $username, $userDetails);
+        //sets use session
+        $_SESSION[ 'username' ] = $username;
         
         //Success
         header("HTTP/1.1 200 User logged in successfully");
+        echo( json_encode( session_id() ) );
         exit();
     }
-
 
     //Deletes session if exists
     function logUserOff(){
 
-        //Deletes session
+        if ( session_status() === PHP_SESSION_NONE ) {
+        
+            session_start();
+        }
+
         session_destroy();
 
         header("HTTP/1.1 200 Logged off");
         exit();              
     }
+    
+    //Retuens all user who where active in the last three minutes
+    function getLoggedUsers(){
 
-    //Delete old data and put new data
-    function updateUser( $username, $userDetails ){
+        if ( session_status() === PHP_SESSION_NONE ) {
+        
+            session_start();
+        }
 
-        $userDetailsPath =  getUserDetailsPath( $username );
+        $loggedUsers = array();
+
+        $usersFolder =  preg_grep('/^([^.])/', scandir( __DIR__ . '/users' ));
+
+        foreach ( $usersFolder  as $userFile ) {
+            
+            $userDetails = getUserFromFile(  __DIR__ . '/users/' . $userFile );
+
+            //Updates the current user
+            $username = $userDetails[ 0 ];
+            if ( $_SESSION[ 'username' ] === $username ) {
+
+                updateUser();
+                continue;
+            }
+
+            //removes password from user
+            $userDetails = removePassword( $userDetails );
+
+
+            //Adds only user which was active in the last three minutes
+            $lastTimeActive = strtotime( $userDetails[ 5 ] );
+            $minutes = 3;
+
+            if ( time() - $lastTimeActive  <  $minutes * 60 ){
+                array_push( $loggedUsers, $userDetails );
+
+            }
+            
+        }
+
+        return  $loggedUsers;
+
+    }
+
+    //Updates the user details on request
+    function updateUser( $currentUsername = null ){
+
+        if (! isset( $currentUsername ) ) {
+            $currentUsername = $_SESSION[ 'username' ];
+
+        }
+
+        $userDetailsPath =  getUserDetailsPath( $currentUsername );
         $handle = fopen( $userDetailsPath, 'a+' );
+
+        $userDetails = getUser( $currentUsername );
+
+        //if it is user login request increase login count
+        if ( ! isset( $_SESSION[ 'username' ] ) ) {
+
+            $userDetails [ 2 ] = (int)$userDetails[ 2 ]++;
+        }
+
+        $userDetails [ 3 ] = $_SERVER['REMOTE_ADDR'];
+        $userDetails [ 4 ] = $_SERVER['HTTP_USER_AGENT'];
+        $userDetails [ 5 ] = date("Y-m-d H:i:s");     
 
         file_put_contents( $userDetailsPath, "" );
         fputcsv( $handle, $userDetails, ','); 
@@ -81,10 +142,17 @@
         fclose( $handle );
     }
 
-    //gets user Details
+    //Gets user details from username
     function getUser( $username ){
         $userDetailsPath =  getUserDetailsPath( $username );
-        $handle = fopen( $userDetailsPath, 'r' );
+        
+        return getUserFromFile( $userDetailsPath );
+    }
+
+    //Returns user details by file path
+    function getUserFromFile( $filePath ){
+
+        $handle = fopen( $filePath, 'r' );
 
         $userDetails = fgetcsv( $handle ) ;
         fclose( $handle );
@@ -92,10 +160,24 @@
         return $userDetails;
     }
 
+    //Returns path by username
     function getUserDetailsPath( $username ){
         return "./users/" . $username . ".csv";
     }
+    
+    //Returns user array without password
+    function removePassword( $userDetails ){
 
+        $formattedUser = array();
+
+        //removes password
+        for ($i=0; $i < sizeof( $userDetails ); $i++) { 
+
+            if( $i !== 1 ){
+                array_push( $formattedUser, $userDetails[ $i ]);
+            } 
+        }
+
+        return $formattedUser;
+    }
 ?>
-
-
