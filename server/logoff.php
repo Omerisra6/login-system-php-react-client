@@ -10,7 +10,10 @@
     header("Access-Control-Allow-Credentials: true");
     header('Content-Type: application/json');
 
-    session_start();
+    if ( session_status() === PHP_SESSION_NONE && isset(  $_GET[ 'PHPSESSID' ] ) ) {
+        session_id( $_GET[ 'PHPSESSID' ]  );
+        session_start();
+    }
 
     $method = $_SERVER['REQUEST_METHOD'];
     if ($method == "OPTIONS") {
