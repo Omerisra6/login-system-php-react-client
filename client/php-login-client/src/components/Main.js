@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getLoggedUsersRequest } from '../userRequests';
-import LogOffButton from './LogOffButton';
+import TopMain from './TopMain';
 
 export default function Main( { setSession, session } ) {
 
@@ -12,10 +12,11 @@ export default function Main( { setSession, session } ) {
 
         return () => clearInterval( interval )
 
-    }, [])
+    }, [ session ])
 
     return(
-        <LogOffButton setSession={setSession}/>
-
+        <>
+            <TopMain session={session} setSession={setSession} usersNumber={ loggedUsers.length }/>
+        </>
     );
 }

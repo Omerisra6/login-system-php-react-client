@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './App.css';
 import LoginOrSignup from './components/LoginOrSignup';
 import Main from './components/Main';
@@ -12,7 +11,7 @@ function App() {
     <div className="App">
         { ! session ? 
           <LoginOrSignup  setSession={setSession}/>:
-          <Main  session={session} setSession={setSession}/>
+          <Main session={session} setSession={setSession}/>
         }
     </div>
   );

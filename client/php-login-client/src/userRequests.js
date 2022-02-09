@@ -66,19 +66,48 @@ const logOffRequest = async( setSession ) => {
     })
 }
 
-const getLoggedUsersRequest = async( setLoggedUsers, session ) =>{
+//Sends get logged users request and sets the logged users list
+const getLoggedUsersRequest = async( setLoggedUsers, session ) => {
     await fetch( `http://localhost:8000/get_users.php?PHPSESSID=${session}`, {
         method: 'GET'
-    }).then( res => {
-        setLoggedUsers( res.json() )
+    }).then( ( res ) => res.json())
+    .then( data => {
+
+        if (data.length === 0 ) {
+            setLoggedUsers( [] )
+        }
+
+        setLoggedUsers(data )
+       
+    })
+    .catch( ( ) => {
+        
+        //Handles wrong session passed
+        alert( 'Error: Please try logoff and in again' )
+        return
+    
     })
 }
+
+//Sends get username request to server and sets the username state
+const getUsername = async( setUsername, session ) => {
+    await fetch( `http://localhost:8000/get_username.php?PHPSESSID=${session}`, {
+        method: 'GET'
+    })
+    .then((res) => res.json())
+    .then( data => {
+
+        setUsername( data )
+    })
+}
+
 
 export{ 
     logOffRequest,
     logOnRequest,
     signUpRequest,
     getLoggedUsersRequest,
+    getUsername,
 }
 
 

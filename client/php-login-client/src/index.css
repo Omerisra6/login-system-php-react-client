@@ -3,6 +3,10 @@
 
 }
 
+body{
+  background-color: #F2F3F7;
+}
+
 textarea:focus, input:focus{
   outline: none;
 }

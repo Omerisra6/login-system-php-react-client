@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 const sizesMap ={ 
     fit: '90%',
-    sm: '12vw',
+    sm: '8vw',
     md: '28vw',
     lg: '40vw',
 }
@@ -29,7 +29,6 @@ const StyledButton = styled.button`
     background-color: ${ ( { color } ) => colorsMap[ color ].color};
     border: 2px solid ${ ( { color } ) => colorsMap[ color ].border};
     color: ${ ( { color } ) => colorsMap[ color ].text};
-    border-radius: 8px;
     overflow: hidden;
     padding: 1vh 0.5vw;
     justify-content: center;

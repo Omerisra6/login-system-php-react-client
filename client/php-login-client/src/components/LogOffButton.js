@@ -9,6 +9,6 @@ export default function LogOffButton( { setSession } ) {
     }
 
     return(
-        <Button onClick={onLogOff}/> 
+        <Button onClick={onLogOff} size="sm"> Log off</Button>
     );
 }
