@@ -67,7 +67,7 @@ const logOffRequest = async( session, setSession ) => {
 }
 
 //Sends get logged users request and sets the logged users list
-const getLoggedUsersRequest = async( setLoggedUsers, session ) => {
+const getLoggedUsersRequest = async( session, setLoggedUsers, setSession) => {
     await fetch( `http://localhost:8000/get_users.php?PHPSESSID=${session}`, {
         method: 'GET'
     }).then( ( res ) => res.json())
@@ -83,7 +83,8 @@ const getLoggedUsersRequest = async( setLoggedUsers, session ) => {
     .catch( ( ) => {
         
         //Handles wrong session passed
-        alert( 'Error: Please try logoff and in again' )
+        alert( 'Error: You are not logged in, going back to login page' )
+        setSession( null )
         return
     
     })
