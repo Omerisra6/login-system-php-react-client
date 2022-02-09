@@ -2,10 +2,10 @@ import React from 'react';
 import Button from '../ui/Button';
 import { logOffRequest } from '../userRequests';
 
-export default function LogOffButton( { setSession } ) {
+export default function LogOffButton( { session, setSession } ) {
 
     const onLogOff = () => {
-        logOffRequest( setSession )
+        logOffRequest( session, setSession )
     }
 
     return(

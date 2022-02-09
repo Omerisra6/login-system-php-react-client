@@ -9,7 +9,7 @@ export default function TopMain( { session,  setSession, usersNumber } ) {
         <StyledTopMain>
             <UsersNumber usersNumber={ usersNumber }/>
             <Welcome session={session}/>
-            <LogOffButton setSession={setSession}/>
+            <LogOffButton session={session} setSession={setSession}/>
 
         </StyledTopMain>
     );

@@ -57,9 +57,9 @@ const logOnRequest = async( username, password, setSession ) => {
 }
 
 //Sends logOff request to server and removes current user
-const logOffRequest = async( setSession ) => {
+const logOffRequest = async( session, setSession ) => {
 
-    await fetch( `http://localhost:8000/logoff.php`, {
+    await fetch( `http://localhost:8000/logoff.php?PHPSESSID=${session}`, {
         method: 'GET'
     }).then( res => {
         setSession( null )
