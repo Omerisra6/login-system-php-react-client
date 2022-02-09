@@ -1,6 +1,6 @@
 
 //Sends a signup request to server and updates current user
-const signUpRequest = async( username, password, password_confirm, setUsername) => {
+const signUpRequest = async( username, password, password_confirm, setSession) => {
 
     const user = {
         username,
@@ -14,13 +14,14 @@ const signUpRequest = async( username, password, password_confirm, setUsername) 
             'Content-Type': 'application/json'
         },
         body: JSON.stringify( user )
-    }).then( res => {
+    }).then( async res => {
 
         const status = res.status
 
         //Sets current user
         if( status === 201){
-            setUsername( username )
+            const sessionId = await res.json()
+            setSession( sessionId  )
             return
         }
 
@@ -36,16 +37,18 @@ const signUpRequest = async( username, password, password_confirm, setUsername) 
 }
 
 //Sends a login request to server and updates current user
-const logOnRequest = async( username, password, setUsername ) => {
+const logOnRequest = async( username, password, setSession ) => {
 
     await fetch( `http://localhost:8000/login.php?username=${username}&password=${password}` ,{
         method: 'GET'
     })
-    .then( res => {
+    .then( async res => {
 
         if ( res.status === 200) {
 
-            setUsername( username )
+            //Handles the session problem between domains
+            const sessionId = await res.json() 
+            setSession( sessionId )
             return
         }
         
@@ -54,19 +57,28 @@ const logOnRequest = async( username, password, setUsername ) => {
 }
 
 //Sends logOff request to server and removes current user
-const logOffRequest = async( setUsername ) => {
+const logOffRequest = async( setSession ) => {
 
     await fetch( `http://localhost:8000/logoff.php`, {
         method: 'GET'
     }).then( res => {
-        setUsername( null )
+        setSession( null )
+    })
+}
+
+const getLoggedUsersRequest = async( setLoggedUsers, session ) =>{
+    await fetch( `http://localhost:8000/get_users.php?PHPSESSID=${session}`, {
+        method: 'GET'
+    }).then( res => {
+        setLoggedUsers( res.json() )
     })
 }
 
 export{ 
     logOffRequest,
     logOnRequest,
-    signUpRequest
+    signUpRequest,
+    getLoggedUsersRequest,
 }
 
 

@@ -6,7 +6,7 @@ import Button from '../ui/Button'
 
 
 
-export default function SignupForm( { setUsername } ) {
+export default function SignupForm( { setSession } ) {
 
     const usernameRef        = useRef( null )
     const passwordRef        = useRef( null )
@@ -20,7 +20,7 @@ export default function SignupForm( { setUsername } ) {
         const password        = passwordRef.current.value.trim()
         const passwordConfirm = passwordConfirmRef.current.value.trim()
 
-        await signUpRequest( username, password, passwordConfirm, setUsername)
+        await signUpRequest( username, password, passwordConfirm, setSession)
     }
 
     return(
@@ -34,7 +34,7 @@ export default function SignupForm( { setUsername } ) {
             <label htmlFor="confirm-password"/>
             <Input type="password" placeholder="Confirm Password" size="fit" name="confirm_password" id="confirm_password" inputRef={passwordConfirmRef}/>
             
-            <Button type="sumbit" size="fit">Login</Button>
+            <Button type="sumbit" size="fit">Signup</Button>
         </Form>
     );
 }

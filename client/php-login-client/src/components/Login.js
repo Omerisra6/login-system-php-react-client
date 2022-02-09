@@ -3,7 +3,7 @@ import StyledFormWrapper from '../ui/StyledFormWrapper';
 import StyledFormContainer from '../ui/SytledFormContainer';
 import LoginForm from './LoginForm';
 
-export default function Login( { setSigned, setUsername } ) {
+export default function Login( { setSigned, setSession } ) {
 
     const showSignup = ( e ) => {
         e.preventDefault()
@@ -16,7 +16,7 @@ export default function Login( { setSigned, setUsername } ) {
             <StyledFormContainer>
                 <h1> Login to your account </h1>
                 <h3> Don't have an account?  <span onClick={showSignup}> Signup </span></h3>
-                <LoginForm setUsername={setUsername}/>
+                <LoginForm  setSession={setSession}/>
               
             </StyledFormContainer>
         </StyledFormWrapper>

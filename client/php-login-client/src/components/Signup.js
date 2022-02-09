@@ -2,7 +2,7 @@ import StyledFormWrapper from '../ui/StyledFormWrapper';
 import StyledFormContainer from '../ui/SytledFormContainer';
 import SignupForm from './SignupForm';
 
-export default function Signup( { setSigned, setUsername } ) {
+export default function Signup( { setSigned, setSession } ) {
 
     const hideSignup = ( e ) => {
         e.preventDefault()
@@ -15,7 +15,7 @@ export default function Signup( { setSigned, setUsername } ) {
             <StyledFormContainer>
                 <h1> Signup for new account </h1>
                 <h3> Don't have an account?  <span onClick={hideSignup}> Signup </span></h3>
-                <SignupForm setUsername={setUsername}/>
+                <SignupForm setSession={setSession}/>
             </StyledFormContainer>
         </StyledFormWrapper>
     );

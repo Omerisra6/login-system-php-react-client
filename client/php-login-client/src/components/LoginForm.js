@@ -4,7 +4,7 @@ import Form from '../ui/Form';
 import Input from '../ui/Input';
 import { logOnRequest } from '../userRequests';
 
-export default function LoginForm( { setUsername } ) {
+export default function LoginForm( { setSession } ) {
 
     const usernameRef = useRef( null )
     const passwordRef = useRef( null )
@@ -18,7 +18,7 @@ export default function LoginForm( { setUsername } ) {
         const username = usernameRef.current.value.trim()
         const password = passwordRef.current.value.trim()
 
-        logOnRequest( username, password, setUsername )      
+        logOnRequest( username, password, setSession )      
     }
 
 
