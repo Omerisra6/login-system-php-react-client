@@ -11,12 +11,19 @@
         $handle = fopen( $userDetailsPath, 'w');
         
         $hashed_password = password_hash( $password, PASSWORD_DEFAULT);
-        $login_count = 0;
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $last_action_register_login_time = date("Y-m-d H:i:s");     
+        $login_count     = 0;
+        $ip              = $_SERVER['REMOTE_ADDR'];
+        $user_agent      = $_SERVER['HTTP_USER_AGENT'];
+        $last_action     = date("Y-m-d H:i:s");     
+        $last_login      = date("Y-m-d H:i:s");  
+        $register_time   = date("Y-m-d H:i:s");  
         
-        $user = [ $username, $hashed_password, $login_count, $ip, $user_agent, $last_action_register_login_time, $last_action_register_login_time, $last_action_register_login_time ];
+        $user = [ 
+            $username, $hashed_password, 
+            $login_count, $ip, 
+            $user_agent, $last_action,
+            $last_login, $register_time
+        ];
 
         fputcsv( $handle, $user, ','); 
         fclose( $handle );
@@ -64,6 +71,8 @@
             session_start();
         }
 
+        markUserOffline();
+
         session_destroy();
 
         header("HTTP/1.1 200 Logged off");
@@ -86,6 +95,11 @@
             
             $userDetails = getUserFromFile(  __DIR__ . '/users/' . $userFile );
 
+            //Skipps ofline users
+            if ( $userDetails[ 5 ] === 'offline') {
+                continue;
+            }
+
             //Updates the current user
             $username = $userDetails[ 0 ];
             if ( $_SESSION[ 'username' ] === $username ) {
@@ -102,7 +116,7 @@
             $lastTimeActive = strtotime( $userDetails[ 5 ] );
             $minutes = 3;
 
-            if ( time() - $lastTimeActive  >  $minutes * 60 ){
+            if ( time() - $lastTimeActive  <  $minutes * 60 ){
                 array_push( $loggedUsers, $userDetails );
 
             }
@@ -142,7 +156,26 @@
         fclose( $handle );
     }
 
-   
+    //Marks the logged user as offline
+    function markUserOffline(){
+
+        if ( session_status() === PHP_SESSION_NONE ) {
+        
+            session_start();
+        }
+        $currentUsername = $_SESSION[ 'username' ];
+        $userDetailsPath =  getUserDetailsPath( $currentUsername );
+
+        $handle = fopen( $userDetailsPath, 'a+' );
+        $userDetails = getUser( $currentUsername );
+
+        $userDetails [ 5 ] = "offline";
+        file_put_contents( $userDetailsPath, "" );
+        fputcsv( $handle, $userDetails, ','); 
+
+        fclose( $handle );
+
+    }
 
     //Gets user details from username
     function getUser( $username ){
