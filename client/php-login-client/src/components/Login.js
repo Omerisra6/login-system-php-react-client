@@ -1,6 +1,6 @@
 
-import StyledFormWrapper from '../ui/StyledFormWrapper';
-import StyledFormContainer from '../ui/SytledFormContainer';
+import StyledFormWrapper from '../ui/Styled/StyledFormWrapper';
+import StyledFormContainer from '../ui/Styled/SytledFormContainer';
 import LoginForm from './LoginForm';
 
 export default function Login( { setSigned, setSession } ) {
