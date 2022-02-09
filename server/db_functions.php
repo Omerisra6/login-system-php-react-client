@@ -14,9 +14,9 @@
         $login_count = 0;
         $ip = $_SERVER['REMOTE_ADDR'];
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $last_action_register_time = date("Y-m-d H:i:s");     
-
-        $user = [ $username, $hashed_password, $login_count, $ip, $user_agent, $last_action_register_time, $last_action_register_time ];
+        $last_action_register_login_time = date("Y-m-d H:i:s");     
+        
+        $user = [ $username, $hashed_password, $login_count, $ip, $user_agent, $last_action_register_login_time, $last_action_register_login_time, $last_action_register_login_time ];
 
         fputcsv( $handle, $user, ','); 
         fclose( $handle );
@@ -102,7 +102,7 @@
             $lastTimeActive = strtotime( $userDetails[ 5 ] );
             $minutes = 3;
 
-            if ( time() - $lastTimeActive  <  $minutes * 60 ){
+            if ( time() - $lastTimeActive  >  $minutes * 60 ){
                 array_push( $loggedUsers, $userDetails );
 
             }
@@ -126,10 +126,10 @@
 
         $userDetails = getUser( $currentUsername );
 
-        //if it is user login request increase login count
+        //if it is user login request increase login count and last login time
         if ( ! isset( $_SESSION[ 'username' ] ) ) {
-
             $userDetails [ 2 ] = (int)$userDetails[ 2 ]++;
+            $userDetails [ 6 ] =  date("Y-m-d H:i:s"); 
         }
 
         $userDetails [ 3 ] = $_SERVER['REMOTE_ADDR'];
@@ -141,6 +141,8 @@
 
         fclose( $handle );
     }
+
+   
 
     //Gets user details from username
     function getUser( $username ){
