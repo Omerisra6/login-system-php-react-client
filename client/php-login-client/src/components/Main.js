@@ -10,7 +10,7 @@ export default function Main( { setSession, session } ) {
 
     useEffect( () => { 
 
-        let interval = setInterval( () => { getLoggedUsersRequest( setLoggedUsers, session ) }, 3000)
+        let interval = setInterval( () => { getLoggedUsersRequest( session, setLoggedUsers, setSession ) }, 3000)
 
         return () => clearInterval( interval )
 
