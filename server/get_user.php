@@ -24,15 +24,18 @@
         exit();
     }
 
+
     if ( ! isset( $_SESSION['username'] ) ) {
         header("HTTP/1.1 400 User must be logged in");
         exit();
     }
 
-    
-    header( "HTTP/1.1 200 username returned successfully" );
-    echo( json_encode( $_SESSION[ 'username' ] ) );
-    exit();
+    //Gets the user from request username
+    $user = getUser( $_GET[ 'username' ] );
+    $user = removePassword( $user );
 
+    header( "HTTP/1.1 200 user returned successfully" );
+    echo( json_encode( $user) );
+    exit();
 
 ?>
