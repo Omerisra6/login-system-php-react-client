@@ -19,7 +19,7 @@ export default function Main( { setSession, session } ) {
     return(
         <StyledMain>
             <TopMain session={session} setSession={setSession} usersNumber={ loggedUsers.length }/>
-            <LoggedUsersTable session={session} loggedUsers={loggedUsers}/> 
+            <LoggedUsersTable session={session} setSession={setSession} loggedUsers={loggedUsers}/> 
         </StyledMain>
     );
 }
