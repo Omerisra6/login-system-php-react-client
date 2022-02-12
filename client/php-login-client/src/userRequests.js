@@ -90,8 +90,8 @@ const getLoggedUsersRequest = async( session, setLoggedUsers, setSession) => {
     })
 }
 
-//Sends get username request to server and sets the username state
-const getUsername = async( setUsername, session ) => {
+//Sends get username request and sets the username state
+const getUsername = async( session, setSession, setUsername ) => {
     await fetch( `http://localhost:8000/get_username.php?PHPSESSID=${session}`, {
         method: 'GET'
     })
@@ -99,6 +99,35 @@ const getUsername = async( setUsername, session ) => {
     .then( data => {
 
         setUsername( data )
+    })
+    .catch( ( ) => {
+        
+        //Handles wrong session passed
+        alert( 'Error: You are not logged in, going back to login page' )
+        setSession( null )
+        return
+    
+    })
+}
+
+//Sends get user Request and sets user state 
+const getUser = async( session, username, setSession, setUser ) => {
+    await fetch( `http://localhost:8000/get_user.php?PHPSESSID=${session}&username=${username}`, {
+        method: 'GET'
+    })
+    .then((res) => res.json())
+    .then( data => {
+        console.log( data )
+
+        setUser( data )
+    })
+    .catch( ( ) => {
+        
+        //Handles wrong session passed
+        alert( 'Error: You are not logged in, going back to login page' )
+        setSession( null )
+        return
+    
     })
 }
 
@@ -109,6 +138,7 @@ export{
     signUpRequest,
     getLoggedUsersRequest,
     getUsername,
+    getUser,
 }
 
 
