@@ -12,8 +12,8 @@ const sizesMap ={
 
 const colorsMap = {
     light:{
-        color: "#4896FF",
-        border: "#4896FF",
+        color: "#546EFE",
+        border: "#546EFE",
         text: "#fff",
     },
     dark:{
