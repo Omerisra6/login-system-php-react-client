@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getUsername } from '../userRequests';
 
-export default function Welcome( { session } ) {
+export default function Welcome( { session, setSession } ) {
 
     const [ username, setUsername ] = useState( '' )
 
     useEffect( () => {
 
-        getUsername( setUsername, session )
+        getUsername( session, setSession, setUsername )
 
     }, [ session ])
 
