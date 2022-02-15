@@ -95,7 +95,7 @@
             
             $userDetails = getUserFromFile(  __DIR__ . '/users/' . $userFile );
 
-            //Skipps ofline users
+            //Skipps offline users
             if ( $userDetails[ 5 ] === 'offline') {
                 continue;
             }
@@ -103,7 +103,6 @@
             //Updates the current user
             $username = $userDetails[ 0 ];
             if ( $_SESSION[ 'username' ] === $username ) {
-
                 updateUser();
                 continue;
             }
@@ -113,7 +112,7 @@
 
 
             //Adds only user which was active in the last three minutes
-            $lastTimeActive = strtotime( $userDetails[ 5 ] );
+            $lastTimeActive = strtotime( $userDetails[ 4 ] );
             $minutes = 3;
 
             if ( time() - $lastTimeActive  <  $minutes * 60 ){
@@ -130,6 +129,7 @@
     //Updates the user details on request
     function updateUser( $currentUsername = null ){
 
+        //Sets username if it not passed
         if (! isset( $currentUsername ) ) {
             $currentUsername = $_SESSION[ 'username' ];
 
@@ -140,9 +140,10 @@
 
         $userDetails = getUser( $currentUsername );
 
+
         //if it is user login request increase login count and last login time
         if ( ! isset( $_SESSION[ 'username' ] ) ) {
-            $userDetails [ 2 ] = (int)$userDetails[ 2 ]++;
+            $userDetails [ 2 ] = (int)$userDetails[ 2 ] + 1;
             $userDetails [ 6 ] =  date("Y-m-d H:i:s"); 
         }
 
