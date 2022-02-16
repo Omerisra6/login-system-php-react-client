@@ -7,7 +7,7 @@ const StyledLoggedUsersTable = styled.table`
         text-align: center;
     }
 
-    & > thead > tr > th:hover {
+    & > tbody > tr:hover {
         cursor: pointer;
         background-color: #F2F3F7;
     }
