@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledUserDetailsPop = styled.div`
-    background: #ffff;
+    background: #546EFE;
     height: fit-content;
     width: 40vw;
     position: absolute;
@@ -12,11 +12,12 @@ const StyledUserDetailsPop = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 2vh;
-    padding: 2vh 1vw;
+    padding: 2vh 0.5vw;
+    border-radius: 3px;
 
     & > i{
         width: 2vw;
-        color: #546EFE;
+        color: #ffff;
         margin-left: auto;
         cursor: pointer;
     }
@@ -26,7 +27,7 @@ const StyledUserDetailsPop = styled.div`
     }
 
     & > div > h4  {
-        color: #B1B5C4;
+        color: #ffff;
     }
 `
 
