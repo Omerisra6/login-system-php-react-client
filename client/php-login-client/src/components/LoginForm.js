@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Button from '../ui/Button';
 import Form from '../ui/Form';
 import Input from '../ui/Input';
+import LastFormInput from '../ui/Styled/LastFormInput';
 import { logOnRequest } from '../userRequests';
 
 export default function LoginForm( { setSession } ) {
@@ -27,7 +28,7 @@ export default function LoginForm( { setSession } ) {
             <label htmlFor="username"/>
             <Input  type="text" placeholder="Username" size="fit" name="username" id="username" inputRef={usernameRef}/>
             <label htmlFor="password"/>
-            <Input type="password" placeholder="Password" size="fit" name="password" id="password" inputRef={passwordRef}/>
+            <LastFormInput className="password-input" type="password" placeholder="Password" size="fit" name="password" id="password" inputRef={passwordRef}/>
             <Button type="sumbit" size="fit">Login</Button>
         </Form>
     );

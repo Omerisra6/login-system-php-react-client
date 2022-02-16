@@ -30,7 +30,7 @@ const StyledButton = styled.button`
     border: 2px solid ${ ( { color } ) => colorsMap[ color ].border};
     color: ${ ( { color } ) => colorsMap[ color ].text};
     overflow: hidden;
-    padding: 1vh 0.5vw;
+    padding: 2vh 1vw;
     justify-content: center;
     align-items: center;
     cursor: pointer;

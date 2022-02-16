@@ -3,6 +3,7 @@ import { signUpRequest } from '../userRequests';
 import Form from '../ui/Form'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
+import LastFormInput from '../ui/Styled/LastFormInput';
 
 
 
@@ -32,7 +33,7 @@ export default function SignupForm( { setSession } ) {
             <Input type="password" placeholder="Password" size="fit" name="password" id="password" inputRef={passwordRef}/>
 
             <label htmlFor="confirm-password"/>
-            <Input type="password" placeholder="Confirm Password" size="fit" name="confirm_password" id="confirm_password" inputRef={passwordConfirmRef}/>
+            <LastFormInput type="password" placeholder="Confirm Password" size="fit" name="confirm_password" id="confirm_password" inputRef={passwordConfirmRef}/>
             
             <Button type="sumbit" size="fit">Signup</Button>
         </Form>

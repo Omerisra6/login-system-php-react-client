@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const StyledFormContainer = styled.div`
-    height: 70vh;
+    height: 50vh;
     width: 40vw;
     display: flex;
     flex-direction: column;
